@@ -27,12 +27,12 @@ jobs:
       - name: Check Tools
         run: |
           terraform version
-          $PYTHON_BIN --version
+          python3 --version
           curl -s http://localhost:11434/api/tags
 
       - name: Install Python Dependencies
         run: |
-          $PYTHON_BIN -m pip install --user openai requests
+          python3 -m pip install --user openai requests
 
       - name: Terraform Init
         run: terraform init
@@ -50,7 +50,7 @@ jobs:
         run: terraform show -no-color tfplan > tfplan.txt
 
       - name: Run AI Review
-        run: $PYTHON_BIN ai/ai_review.py > ai-report.txt
+        run: python3 ai/ai_review.py > ai-report.txt
 
       - name: Show AI Report
         run: cat ai-report.txt
@@ -58,6 +58,6 @@ jobs:
       - name: Send Slack Report
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: $PYTHON_BIN ai/slack_send.py
+        run: python3 ai/slack_send.py
 
 
